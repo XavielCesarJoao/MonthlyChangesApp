@@ -1,0 +1,65 @@
+php artisan make:livewire Admin/Dashboard
+php artisan make:livewire Admin/Users/index
+php artisan make:livewire Admin/Users/Create
+php artisan make:livewire Admin/Users/Edit
+php artisan make:livewire Admin/Role/index
+php artisan make:livewire Admin/Role/Create
+php artisan make:livewire Admin/Role/Edit
+php artisan make:livewire Admin/Banks/index
+php artisan make:livewire Admin/Banks/Create
+php artisan make:livewire Admin/Banks/Edit
+php artisan make:livewire Admin/Clients/index
+php artisan make:livewire Admin/Clients/Create
+php artisan make:livewire Admin/Clients/Edit
+php artisan make:livewire Admin/Suppliers/index
+php artisan make:livewire Admin/Suppliers/Create
+php artisan make:livewire Admin/Suppliers/Edit
+php artisan make:livewire Admin/Brands/index
+php artisan make:livewire Admin/Brands/Create
+php artisan make:livewire Admin/Brands/Edit
+php artisan make:livewire Admin/Units/index
+php artisan make:livewire Admin/Units/Create
+php artisan make:livewire Admin/Units/Edit
+php artisan make:livewire Admin/ProductCategory/index
+php artisan make:livewire Admin/ProductCategory/Create
+php artisan make:livewire Admin/ProductCategory/Edit
+php artisan make:livewire Admin/Products/index
+php artisan make:livewire Admin/Products/Create
+php artisan make:livewire Admin/Products/Edit
+php artisan make:livewire Admin/Sales/index
+php artisan make:livewire Admin/Sales/Create
+php artisan make:livewire Admin/Sales/Edit
+php artisan make:livewire Admin/Quotations/index
+php artisan make:livewire Admin/Quotations/Create
+php artisan make:livewire Admin/Quotations/Edit
+php artisan make:livewire Admin/DeliveryNote/index
+php artisan make:livewire Admin/DeliveryNote/Create
+php artisan make:livewire Admin/DeliveryNote/Edit
+php artisan make:livewire Admin/Orders/index
+php artisan make:livewire Admin/Orders/Create
+php artisan make:livewire Admin/Orders/Edit
+php artisan make:livewire Admin/CreditNote/index
+php artisan make:livewire Admin/CreditNote/Create
+php artisan make:livewire Admin/CreditNote/Edit
+php artisan make:livewire Admin/Invoices/index
+php artisan make:livewire Admin/Invoices/Create
+php artisan make:livewire Admin/Invoices/Edit
+php artisan make:livewire Admin/Purchases/index
+php artisan make:livewire Admin/Purchases/Create
+php artisan make:livewire Admin/Purchases/Edit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
