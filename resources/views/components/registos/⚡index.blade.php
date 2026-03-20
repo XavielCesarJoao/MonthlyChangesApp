@@ -4,7 +4,7 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public $NAME = 'XAVIEL JOAO';
+
 
 };
 ?>
@@ -159,7 +159,7 @@ new class extends Component
                             <td class="py-2 px-3" style="color: #212529;">04-03-2026</td>
                             <td class="py-2 px-3">
                                 <strong style="color: #2c3e50;">0020591</strong> 
-                                <span style="color: #6c757d;">- {{ $NAME }}</span>
+                                <span style="color: #6c757d;">- Osvaldo XPTO </span>
                             </td>
                             <td class="py-2 px-3" style="color: #212529;">F28 - Doença Justificada</td>
                             <td class="py-2 px-3" style="color: #212529;">Vencimento</td>
