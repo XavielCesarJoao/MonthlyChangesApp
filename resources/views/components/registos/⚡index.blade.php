@@ -4,68 +4,105 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public $name = 'XAVIEL JOAO';
+
 
 };
 ?>
 
 <div>
-    {{-- FILTROS --}}
-    <div class="card shadow-sm mb-3" style="border-radius: 8px; border: 1px solid #e9ecef;">
-        <div class="card-body" style="background-color: #f8f9fa; border-radius: 8px;">
+    <div class="card shadow-sm mb-3" style="border-radius: 8px; border: 1px solid #dee2e6;">
+    
+<div class="px-3 py-2 d-flex justify-content-between align-items-center"
+     style="background: #f1f3f5; border-bottom: 1px solid #dee2e6; border-radius: 8px 8px 0 0;">
+    
+    <div class="fw-semibold" style="color:#34495e;">
+        Filtros
+    </div>
 
-            <div class="row">
-                <!-- Primeira linha de filtros -->
-                <div class="col-md-3 mb-2">
-                    <label class="form-label fw-semibold" style="color: #495057; font-size: 0.9rem;">Empresa</label>
-                    <select class="form-control form-control-sm" wire:model="empresa" style="border: 1px solid #ced4da; border-radius: 6px;">
-                        <option value="">Todas</option>
-                        <option>Engevia Construção Civil</option>
-                    </select>
-                </div>
+    <div class="d-flex align-items-center gap-3">
 
-                <div class="col-md-3 mb-2">
-                    <label class="form-label fw-semibold" style="color: #495057; font-size: 0.9rem;">Departamento</label>
-                    <select class="form-control form-control-sm" wire:model="departamento" style="border: 1px solid #ced4da; border-radius: 6px;">
-                        <option value="">Todos</option>
-                    </select>
-                </div>
+        <button class="btn btn-light border d-flex align-items-center justify-content-center"
+                style="width:36px; height:36px; margin-right: 8px;"
+                title="Limpar filtros">
+            <i class="bi bi-arrow-clockwise"></i>
+        </button>
 
-                <div class="col-md-3 mb-2">
-                    <label class="form-label fw-semibold" style="color: #495057; font-size: 0.9rem;">Funcionário</label>
-                    <select class="form-control form-control-sm" wire:model="funcionarioFiltro" style="border: 1px solid #ced4da; border-radius: 6px;">
-                        <option value="">Todos</option>
-                    </select>
-                </div>
+        <button class="btn btn-primary d-flex align-items-center justify-content-center"
+                style="width:36px; height:36px; margin-right: 8px;"
+                title="Exportar Excel">
+            <i class="bi bi-file-earmark-excel"></i>
+        </button>
 
-                <div class="col-md-3 mb-2">
-                    <label class="form-label">&nbsp;</label>
-                    <button class="btn btn-success form-control form-control-sm" style="background-color: #28a745; border: none; border-radius: 6px; font-weight: 500;">
-                        Enviar para aprovação
-                    </button>
-                </div>
+        <button class="btn btn-success d-flex align-items-center justify-content-center"
+                style="width:36px; height:36px;"
+                title="Enviar para aprovação">
+            <i class="bi bi-send"></i>
+        </button>
 
-                <!-- Segunda linha de filtros -->
-                <div class="col-md-3 mb-2">
-                    <label class="form-label fw-semibold" style="color: #495057; font-size: 0.9rem;">Estado</label>
-                    <select class="form-control form-control-sm" wire:model="estadoFiltro" style="border: 1px solid #ced4da; border-radius: 6px;">
-                        <option value="">TODOS</option>
-                        <option>Administrativo RH</option>
-                        <option>Aprovado</option>
-                        <option>Rejeitado</option>
-                    </select>
-                </div>
+    </div>
+</div>
 
-                <div class="col-md-2 mb-2">
-                    <label class="form-label">&nbsp;</label>
-                    <button class="btn btn-primary form-control form-control-sm" style="background-color: #007bff; border: none; border-radius: 6px; font-weight: 500;">
-                        Exportar Excel
-                    </button>
-                </div>
+    <!-- BODY -->
+    <div class="card-body" style="background-color: #f8f9fa;">
+
+        <div class="row g-2">
+
+            <!-- Empresa -->
+            <div class="col-md-3">
+                <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
+                    Empresa
+                </label>
+                <select class="form-control form-control-sm"
+                        wire:model="empresa"
+                        style="border-radius: 6px;">
+                    <option value="">Todas</option>
+                    <option>Engevia Construção Civil</option>
+                </select>
+            </div>
+
+            <!-- Departamento -->
+            <div class="col-md-3">
+                <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
+                    Departamento
+                </label>
+                <select class="form-control form-control-sm"
+                        wire:model="departamento"
+                        style="border-radius: 6px;">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+
+            <!-- Funcionário -->
+            <div class="col-md-3">
+                <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
+                    Funcionário
+                </label>
+                <select class="form-control form-control-sm"
+                        wire:model="funcionarioFiltro"
+                        style="border-radius: 6px;">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+
+            <!-- Estado -->
+            <div class="col-md-3">
+                <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
+                    Estado
+                </label>
+                <select class="form-control form-control-sm"
+                        wire:model="estadoFiltro"
+                        style="border-radius: 6px;">
+                    <option value="">Todos</option>
+                    <option>Administrativo RH</option>
+                    <option>Aprovado</option>
+                    <option>Rejeitado</option>
+                </select>
             </div>
 
         </div>
+
     </div>
+</div>
 
     {{-- TABELA --}}
     <div class="card shadow-sm" style="border-radius: 8px; border: 1px solid #e9ecef;">
@@ -122,7 +159,7 @@ new class extends Component
                             <td class="py-2 px-3" style="color: #212529;">04-03-2026</td>
                             <td class="py-2 px-3">
                                 <strong style="color: #2c3e50;">0020591</strong> 
-                                <span style="color: #6c757d;">- {{ $name }}</span>
+                                <span style="color: #6c757d;">- Osvaldo XPTO </span>
                             </td>
                             <td class="py-2 px-3" style="color: #212529;">F28 - Doença Justificada</td>
                             <td class="py-2 px-3" style="color: #212529;">Vencimento</td>
