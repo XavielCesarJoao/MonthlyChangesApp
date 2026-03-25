@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('diaMesAnterior');
             $table->integer('diaPeriodoAtual');
             $table->integer('diaPeriodoLimite');  
+            $table->foreignId('empresa_id')->constrained('empresas')->cascadeOnDelete();
 
         });
     }

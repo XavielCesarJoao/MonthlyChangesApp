@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('nomeEmpresa');
-            $table->string('host')->unique();
-            $table->string('bd')->unique();
-            $table->string('username');
-            $table->string('password');
+            $table->string('host')->unique()->nullable();
+            $table->string('bd')->unique()->nullable();
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
             $table->string('user_api')->nullable();
             $table->string('password_api')->nullable();
             $table->string('company')->nullable();

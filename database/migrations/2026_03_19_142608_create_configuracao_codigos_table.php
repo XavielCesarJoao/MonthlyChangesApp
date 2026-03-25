@@ -14,7 +14,6 @@ return new class extends Migration
     {
         Schema::create('configuracao_codigos', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Empresa::class)->constrained();
             $table->string('codigo');
             $table->string('descricao');
             $table->string('tipo');
@@ -32,6 +31,7 @@ return new class extends Migration
             $table->integer('unicoNoPeriodo')->nullable();
             $table->integer('valorPorDefeito')->nullable();
             $table->string('alteracaomensal_type')->nullable();
+            $table->foreignId('empresa_id')->constrained('empresas')->cascadeOnDelete();
             $table->timestamps();
         });
     }

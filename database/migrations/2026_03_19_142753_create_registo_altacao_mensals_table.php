@@ -14,10 +14,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('registo_altacao_mensals', function (Blueprint $table) {
+        Schema::create('registo_altacao_mensais', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignIdFor(Empresa::class)->constrained();
             $table->foreignIdFor(Funcionario::class)->constrained();
             $table->foreignIdFor(Departamento::class)->constrained();
 
@@ -52,6 +50,7 @@ return new class extends Migration
                 'primavera'
         ])->default('administrativo');
 
+        $table->foreignId('empresa_id')->constrained('empresas')->cascadeOnDelete();
             $table->timestamps();
         });
     }

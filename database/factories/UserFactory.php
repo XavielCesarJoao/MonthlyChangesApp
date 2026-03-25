@@ -30,6 +30,7 @@ class UserFactory extends Factory
             'is_active'         => fake()->boolean(),
             'password'          => static::$password ??= Hash::make('password'),
             'remember_token'    => Str::random(10),
+            'empresa_id'       => fake()->numberBetween(1, 5),
         ];
     }
 
