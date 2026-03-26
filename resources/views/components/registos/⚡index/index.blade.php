@@ -24,7 +24,7 @@
 
         <button class="btn btn-success d-flex align-items-center justify-content-center"
                 style="width:36px; height:36px;"
-                title="Enviar para aprovação">
+                title="Enviar para aprovação" wire:click="enviarAprovacao">
             <i class="bi bi-send"></i>
         </button>
 
@@ -41,7 +41,7 @@
                 <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
                     Empresa
                 </label>
-                <select class="form-control form-control-sm"
+                <select class="form-control form-control-sm select2-empresa"
                         wire:model="empresa"
                         style="border-radius: 6px;">
                     @foreach ($this->buscaEmpresaDepartamentosFuncionariosDoUsuario as $empresa)
@@ -212,3 +212,33 @@
     </div>
 
 </div>
+
+@push('js')
+    <script>
+
+        function inizializaSelec2() {
+            $(document).ready(function() {
+                $('.select2-empresa').select2({
+                    placeholder: 'Selecione uma empresa',
+
+                    width: '100%'
+                });
+                // Atualiza o valor selecionado no Livewire quando a seleção muda
+                $('.select2-empresa').on('change', function() {
+                    var selectedValue = $(this).val();
+                    @this.set('empresa', selectedValue);
+                });
+            });
+        }
+
+        document.addEventListener('livewire:initialized', function() {
+            inizializaSelec2();
+
+            Livewire.hook('morph.updated', ({ el, component }) => {
+                 //
+                   inizializaSelec2();
+            })
+        })
+
+    </script>
+@endpush

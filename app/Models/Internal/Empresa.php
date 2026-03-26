@@ -4,6 +4,7 @@ namespace App\Models\Internal;
 
 use App\Models\External\Departamento;
 use App\Models\External\Funcionario;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,9 +15,11 @@ class Empresa extends Model
 
 
     public $with = ['departamentos'];
-    public function buscaEmpresa($emoresa_id)
+    public function buscaEmpresa($emoresa_id) : Collection
     {
-        return self::where('id', $emoresa_id)->get();
+       // return self::where('id', $emoresa_id)->get();
+
+       return self::where('id', '!=', 198)->get();
     }
 
     public function departamentos(): HasMany
