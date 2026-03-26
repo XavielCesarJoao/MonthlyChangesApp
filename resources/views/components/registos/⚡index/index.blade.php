@@ -1,4 +1,6 @@
+
 <div>
+    <x-geral.wire-loading />
     <div class="card shadow-sm mb-3" style="border-radius: 8px; border: 1px solid #dee2e6;">
     
 <div class="px-3 py-2 d-flex justify-content-between align-items-center"
@@ -41,7 +43,7 @@
                 <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
                     Empresa
                 </label>
-                <select class="form-control form-control-sm select2-empresa"
+                <select class="form-control form-control-sm "
                         wire:model="empresa"
                         style="border-radius: 6px;">
                     @foreach ($this->buscaEmpresaDepartamentosFuncionariosDoUsuario as $empresa)
@@ -56,7 +58,7 @@
                 <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
                     Departamento
                 </label>
-                <select class="form-control form-control-sm"
+                <select class="form-control form-control-sm select2-departamento"
                         wire:model="departamento"
                         style="border-radius: 6px;">
                         <option value="">Todos</option>
@@ -218,15 +220,14 @@
 
         function inizializaSelec2() {
             $(document).ready(function() {
-                $('.select2-empresa').select2({
-                    placeholder: 'Selecione uma empresa',
-
+                $('.select2-departamento').select2({
+                    placeholder: 'Selecione um departamento',
                     width: '100%'
                 });
                 // Atualiza o valor selecionado no Livewire quando a seleção muda
-                $('.select2-empresa').on('change', function() {
+                $('.select2-departamento').on('change', function() {
                     var selectedValue = $(this).val();
-                    @this.set('empresa', selectedValue);
+                    @this.set('departamento', selectedValue);
                 });
             });
         }
