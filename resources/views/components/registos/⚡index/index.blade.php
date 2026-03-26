@@ -233,9 +233,7 @@
 
         document.addEventListener('livewire:initialized', function() {
             inizializaSelec2();
-
             Livewire.hook('morph.updated', ({ el, component }) => {
-                 //
                    inizializaSelec2();
             })
         })
