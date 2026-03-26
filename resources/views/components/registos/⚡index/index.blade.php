@@ -73,10 +73,13 @@
                 <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
                     Funcionário
                 </label>
-                <select class="form-control form-control-sm"
+                <select class="form-control form-control-sm select2-funcionario"
                         wire:model="funcionarioFiltro"
                         style="border-radius: 6px;">
                     <option value="">Todos</option>
+                    @foreach ($this->funcionarios as $funcionario)
+                        <option value="{{ $funcionario['id'] }}"> {{ $funcionario['numeroFuncionario'] }} - {{ $funcionario['nome'] }}</option>
+                    @endforeach
                 </select>
             </div>
 
@@ -230,6 +233,21 @@
                     @this.set('departamento', selectedValue);
                 });
             });
+
+            
+            $(document).ready(function() {
+                $('.select2-funcionario').select2({
+                    placeholder: 'Selecione um funcionário',
+                    width: '100%'
+                });
+                // Atualiza o valor selecionado no Livewire quando a seleção muda
+                $('.select2-funcionario').on('change', function() {
+                    var selectedValue = $(this).val();
+                    @this.set('funcionario', selectedValue);
+                });
+            });
+
+            
         }
 
         document.addEventListener('livewire:initialized', function() {

@@ -16,10 +16,21 @@ class DepartamentoFactory extends Factory
      */
     public function definition(): array
     {
-             $faker = \Faker\Factory::create('pt_BR'); // <- aqui
+        $faker = \Faker\Factory::create('pt_BR');
+        
+        $prefixos = [
+            'Departamento de', 'Gerência de', 'Diretoria de', 
+            'Coordenação de', 'Setor de', 'Área de'
+        ];
+        
+        $areas = [
+            'Recursos Humanos', 'Tecnologia', 'Marketing', 'Vendas',
+            'Financeiro', 'Jurídico', 'Operações', 'Logística',
+            'Compras', 'Qualidade', 'Engenharia', 'TI'
+        ];
+        
         return [
-            //
-            'nomeDepartamento' => fake()->word(),
+            'nomeDepartamento' => $faker->randomElement($prefixos) . ' ' . $faker->randomElement($areas),
             'empresa_id' => fake()->numberBetween(1, 5),
         ];
     }

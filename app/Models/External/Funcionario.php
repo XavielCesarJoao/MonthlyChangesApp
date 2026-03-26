@@ -11,6 +11,7 @@ class Funcionario extends Model
 {
     use HasFactory;
 
+    public $with = ['empresa', 'Departamento'];
     public function empresa() : BelongsTo
     {
         return $this->belongsTo(Empresa::class, 'empresa_id');
@@ -20,4 +21,5 @@ class Funcionario extends Model
     {
         return $this->belongsTo(Departamento::class, 'departamento_id');
     }
+
 }

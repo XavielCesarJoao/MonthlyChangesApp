@@ -15,7 +15,7 @@ new class extends Component
 
     public function mount()
     {
-        $this->empresa = Auth()->user()->empresa_id; 
+        $this->empresa = 4; 
     }
 
     #[Computed]
@@ -35,10 +35,27 @@ new class extends Component
         }
     }
 
+    #[Computed]
+    public function funcionarios() : array
+    {
+        $query = \App\Models\External\Funcionario::query()
+            ->where('empresa_id', $this->empresa);
+
+        // só filtra por departamento se existir
+        if (!empty($this->departamento)) {
+            $query->where('departamento_id', $this->departamento);
+        }
+
+        return $query->get()->toArray();
+    }
+
+
     public function enviarAprovacao()
     {
-        dd($this->empresa);
+        dd($this->empresa, $this->departamento, $this->funcionario);
         // Aqui você pode adicionar a lógica para enviar os dados para aprovação
     }
+
+
 
 };

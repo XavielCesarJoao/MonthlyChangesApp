@@ -17,9 +17,7 @@ class Empresa extends Model
     public $with = ['departamentos'];
     public function buscaEmpresa($emoresa_id) : Collection
     {
-       // return self::where('id', $emoresa_id)->get();
-
-       return self::where('id', '!=', 198)->get();
+        return self::where('id', $emoresa_id)->get();
     }
 
     public function departamentos(): HasMany

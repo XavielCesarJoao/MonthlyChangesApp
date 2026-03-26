@@ -19,15 +19,15 @@ class EmpresaFactory extends Factory
          $faker = \Faker\Factory::create('pt_BR'); // <- aqui
         return [
             //
-            'nomeEmpresa' => fake()->company(),
-            'host' => fake()->unique()->domainName(),
-            'bd' => fake()->unique()->word(),
-            'username' => fake()->userName(),
-            'password' => fake()->password(),
-            'user_api' => fake()->userName(),
-            'password_api' => fake()->password(),
-            'company' => fake()->company(),
-            'line' => fake()->word(),
+            'nomeEmpresa' =>  $faker->company(),
+            'host' => $faker->unique()->domainName(),
+            'bd' => $faker->unique()->word(),
+            'username' => $faker->userName(),
+            'password' => $faker->password(),
+            'user_api' => $faker->userName(),
+            'password_api' => $faker->password(),
+            'company' => $faker->company(),
+            'line' => $faker->word(),
         ];
     }
 }
