@@ -23,6 +23,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+             $faker = \Faker\Factory::create('pt_BR'); // <- aqui
         return [
             'name'              => fake()->name(),
             'email'             => fake()->unique()->safeEmail(),

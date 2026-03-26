@@ -13,6 +13,6 @@ class DepartamentoSeeder extends Seeder
     public function run(): void
     {
         //
-        \App\Models\Internal\Departamento::factory()->count(10)->create();
+       // \App\Models\Internal\Departamento::factory()->count(10)->create();
     }
 }

@@ -16,6 +16,7 @@ class DepartamentoFactory extends Factory
      */
     public function definition(): array
     {
+             $faker = \Faker\Factory::create('pt_BR'); // <- aqui
         return [
             //
             'nomeDepartamento' => fake()->word(),

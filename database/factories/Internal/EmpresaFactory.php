@@ -16,6 +16,7 @@ class EmpresaFactory extends Factory
      */
     public function definition(): array
     {
+         $faker = \Faker\Factory::create('pt_BR'); // <- aqui
         return [
             //
             'nomeEmpresa' => fake()->company(),
