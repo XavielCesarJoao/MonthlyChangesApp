@@ -35,4 +35,10 @@ new class extends Component
         }
     }
 
+    public function enviarAprovacao()
+    {
+        dd($this->empresa);
+        // Aqui você pode adicionar a lógica para enviar os dados para aprovação
+    }
+
 };
