@@ -16,8 +16,18 @@ class EmpresaFactory extends Factory
      */
     public function definition(): array
     {
+         $faker = \Faker\Factory::create('pt_BR'); // <- aqui
         return [
             //
+            'nomeEmpresa' => fake()->company(),
+            'host' => fake()->unique()->domainName(),
+            'bd' => fake()->unique()->word(),
+            'username' => fake()->userName(),
+            'password' => fake()->password(),
+            'user_api' => fake()->userName(),
+            'password_api' => fake()->password(),
+            'company' => fake()->company(),
+            'line' => fake()->word(),
         ];
     }
 }

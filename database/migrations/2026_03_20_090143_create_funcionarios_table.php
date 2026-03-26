@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('numeroFuncionario')->unique();
             $table->foreignIdFor(\App\Models\External\Departamento::class)->constrained();
+            $table->foreignId('empresa_id')->constrained('empresas')->cascadeOnDelete();
             $table->timestamps();
         });
     }

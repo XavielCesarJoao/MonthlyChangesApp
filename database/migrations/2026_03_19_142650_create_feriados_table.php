@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('feriados', function (Blueprint $table) {
             $table->id();
+            $table->date('data');
+            $table->foreignId('empresa_id')->constrained('empresas')->cascadeOnDelete();
             $table->timestamps();
         });
     }

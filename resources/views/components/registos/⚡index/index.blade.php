@@ -1,14 +1,3 @@
-<?php
-
-use Livewire\Component;
-
-new class extends Component
-{
-
-
-};
-?>
-
 <div>
     <div class="card shadow-sm mb-3" style="border-radius: 8px; border: 1px solid #dee2e6;">
     
@@ -47,7 +36,7 @@ new class extends Component
 
         <div class="row g-2">
 
-            <!-- Empresa -->
+            <!-- Empresa -->    
             <div class="col-md-3">
                 <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
                     Empresa
@@ -55,8 +44,10 @@ new class extends Component
                 <select class="form-control form-control-sm"
                         wire:model="empresa"
                         style="border-radius: 6px;">
-                    <option value="">Todas</option>
-                    <option>Engevia Construção Civil</option>
+                    @foreach ($this->buscaEmpresaDepartamentosFuncionariosDoUsuario as $empresa)
+                        <option value="{{ $empresa['id'] }}"> {{ $empresa['nomeEmpresa'] }}</option> 
+                    @endforeach
+                  
                 </select>
             </div>
 
@@ -68,7 +59,10 @@ new class extends Component
                 <select class="form-control form-control-sm"
                         wire:model="departamento"
                         style="border-radius: 6px;">
-                    <option value="">Todos</option>
+                        <option value="">Todos</option>
+                        @foreach ($this->buscaEmpresaDepartamentosFuncionariosDoUsuario[0]['departamentos'] as $departamento)
+                            <option value="{{ $departamento['id'] }}"> {{ $departamento['nomeDepartamento'] }}</option>  
+                        @endforeach
                 </select>
             </div>
 

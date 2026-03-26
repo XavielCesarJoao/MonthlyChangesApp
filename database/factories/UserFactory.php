@@ -23,6 +23,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+             $faker = \Faker\Factory::create('pt_BR'); // <- aqui
         return [
             'name'              => fake()->name(),
             'email'             => fake()->unique()->safeEmail(),
@@ -30,6 +31,7 @@ class UserFactory extends Factory
             'is_active'         => fake()->boolean(),
             'password'          => static::$password ??= Hash::make('password'),
             'remember_token'    => Str::random(10),
+            'empresa_id'       => fake()->numberBetween(1, 5),
         ];
     }
 

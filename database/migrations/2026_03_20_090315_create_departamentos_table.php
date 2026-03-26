@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('departamentos', function (Blueprint $table) {
             $table->id();
             $table->string('nomeDepartamento');
+            $table->foreignId('empresa_id')->constrained('empresas')->cascadeOnDelete();
         });
     }
 
