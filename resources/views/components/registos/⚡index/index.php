@@ -13,48 +13,67 @@ new class extends Component
     public $departamento;
     public $funcionario;
 
-    public function mount()
-    {
-        $this->empresa = 4; 
-    }
+    public $dataAlteracao;
+    public $tipoAlteracao;
+    public $observacao;
+    public $statusAprovacao = true;
+    public $nova = [
+        'empresa' => null,
+        'departamento' => null,
+        'funcionario' => null,
+        'dataAlteracao' => null,
+        'tipoAlteracao' => null,
+        'observacao' => null,
+    ];
 
-    #[Computed]
-    public function buscaEmpresaDepartamentosFuncionariosDoUsuario() : Array
-    {
-        try
+
+        public function mount()
         {
-            Log::info('Buscando empresa com id : ' . $this->empresa);
-            $empresa = new Empresa();
-            return $empresa->buscaEmpresa($this->empresa)->toArray();
-
+            $this->empresa = 1; 
         }
-        catch(Exception $ex)
+
+        #[Computed]
+        public function buscaEmpresaDepartamentosFuncionariosDoUsuario() : Array
         {
-            Log::error('Erro ao buscar empresa do usuario: ' . $ex->getMessage());
-            return [];
-        }
-    }
+            try
+            {
+                Log::info('Buscando empresa com id : ' . $this->empresa);
+                $empresa = new Empresa();
+                return $empresa->buscaEmpresa($this->empresa)->toArray();
 
-    #[Computed]
-    public function funcionarios() : array
-    {
-        $query = \App\Models\External\Funcionario::query()
-            ->where('empresa_id', $this->empresa);
-
-        // só filtra por departamento se existir
-        if (!empty($this->departamento)) {
-            $query->where('departamento_id', $this->departamento);
+            }
+            catch(Exception $ex)
+            {
+                Log::error('Erro ao buscar empresa do usuario: ' . $ex->getMessage());
+                return [];
+            }
         }
 
-        return $query->get()->toArray();
-    }
+        #[Computed]
+        public function funcionarios() : array
+        {
+            $query = \App\Models\External\Funcionario::query()
+                ->where('empresa_id', $this->empresa);
+
+            // só filtra por departamento se existir
+            if (!empty($this->departamento)) {
+                $query->where('departamento_id', $this->departamento);
+            }
+
+            return $query->get()->toArray();
+        }
 
 
-    public function enviarAprovacao()
-    {
-        dd($this->empresa, $this->departamento, $this->funcionario);
-        // Aqui você pode adicionar a lógica para enviar os dados para aprovação
-    }
+        public function enviarAprovacao()
+        {
+            dd($this->empresa, $this->departamento, $this->funcionario);
+            // Aqui você pode adicionar a lógica para enviar os dados para aprovação
+        }
+
+        public function resetarFiltros()
+        {
+            $this->reset(['departamento', 'funcionario']); 
+        }
 
 
 

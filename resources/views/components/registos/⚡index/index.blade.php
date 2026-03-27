@@ -2,35 +2,69 @@
 <div>
     <x-geral.wire-loading />
     <div class="card shadow-sm mb-3" style="border-radius: 8px; border: 1px solid #dee2e6;">
-    
-<div class="px-3 py-2 d-flex justify-content-between align-items-center"
-     style="background: #f1f3f5; border-bottom: 1px solid #dee2e6; border-radius: 8px 8px 0 0;">
-    
-    <div class="fw-semibold" style="color:#34495e;">
-        Filtros
-    </div>
+<div class="px-3 py-2 d-flex justify-content-between align-items-center border-bottom" 
+     style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);">
 
-    <div class="d-flex align-items-center gap-3">
+    <div class="d-flex align-items-center gap-2">
 
-        <button class="btn btn-light border d-flex align-items-center justify-content-center"
-                style="width:36px; height:36px; margin-right: 8px;"
-                title="Limpar filtros">
+        <!-- Botão Atualizar -->
+        <button class="btn btn-sm border-0" 
+                title="Atualizar filtros" 
+                wire:click="resetarFiltros"
+                style="background: #f1f3f5; color: #495057; width: 34px; height: 34px; border-radius: 5px;">
             <i class="bi bi-arrow-clockwise"></i>
         </button>
 
-        <button class="btn btn-primary d-flex align-items-center justify-content-center"
-                style="width:36px; height:36px; margin-right: 8px;"
-                title="Exportar Excel">
+        <!-- Botão Exportar Excel -->
+        <button class="btn btn-sm border-0" 
+                title="Exportar para Excel" 
+                wire:click="exportarExcel"
+                style="background: #f1f3f5; color: #198754; width: 34px; height: 34px; border-radius: 5px;">
             <i class="bi bi-file-earmark-excel"></i>
         </button>
 
-        <button class="btn btn-success d-flex align-items-center justify-content-center"
-                style="width:36px; height:36px;"
-                title="Enviar para aprovação" wire:click="enviarAprovacao">
-            <i class="bi bi-send"></i>
+        <div class="vr mx-1" style="color: #dee2e6;"></div>
+
+        <!-- Botão Enviar para Aprovação -->
+        <div class="vr mx-1" style="color: #dee2e6;"></div>
+        <!-- Botão Voltar/Recusar -->
+        <button class="btn btn-sm" 
+            title="Recusar e voltar documento" 
+            wire:click="recusarDocumento"
+            style="background: #dc3545; color: white; border-radius: 5px; padding: 5px px;">
+            <i class="bi bi-arrow-return-left me-1"></i> Voltar/Recusar
+          </button>
+    <div class="vr mx-1" style="color: #dee2e6;"></div>
+    <button class="btn btn-sm" 
+            wire:click="enviarAprovacao"
+            style="background: #198754; color: white; border-radius: 5px; padding: 5px 12px;">
+        <i class="bi bi-send me-1"></i> Enviar aprovação
+    </button>
+     <div class="vr mx-1" style="color: #dee2e6;"></div>
+        <!-- Botão Histórico (opcional) -->
+        <button class="btn btn-sm border-0" 
+                title="Ver histórico de aprovações" 
+                wire:click="verHistorico"
+                style="background: #f1f3f5; color: #6c757d; width: 34px; height: 34px; border-radius: 8px;">
+            <i class="bi bi-clock-history"></i>
         </button>
 
     </div>
+
+    <div class="d-flex align-items-center gap-2">
+        <!-- Badge de status -->
+        @if($statusAprovacao)
+            <span class="badge" style="background: #e7f3ff; color: #0c63e4; padding: 5px 10px; border-radius: 20px;">
+                <i class="bi bi-info-circle me-1"></i> {{ $statusAprovacao }}
+            </span>
+        @endif
+        
+        <!-- Título -->
+        <div class="text-muted small fw-semibold">
+            <i class="bi bi-calendar3 me-1"></i> Alterações mensais
+        </div>
+    </div>
+
 </div>
 
     <!-- BODY -->
@@ -40,9 +74,6 @@
 
             <!-- Empresa -->    
             <div class="col-md-3">
-                <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
-                    Empresa
-                </label>
                 <select class="form-control form-control-sm "
                         wire:model="empresa"
                         style="border-radius: 6px;">
@@ -55,9 +86,7 @@
 
             <!-- Departamento -->
             <div class="col-md-3">
-                <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
-                    Departamento
-                </label>
+
                 <select class="form-control form-control-sm select2-departamento"
                         wire:model="departamento"
                         style="border-radius: 6px;">
@@ -70,9 +99,7 @@
 
             <!-- Funcionário -->
             <div class="col-md-3">
-                <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
-                    Funcionário
-                </label>
+
                 <select class="form-control form-control-sm select2-funcionario"
                         wire:model="funcionarioFiltro"
                         style="border-radius: 6px;">
@@ -85,13 +112,10 @@
 
             <!-- Estado -->
             <div class="col-md-3">
-                <label class="form-label fw-semibold mb-1" style="font-size: 0.8rem; color:#495057;">
-                    Estado
-                </label>
                 <select class="form-control form-control-sm"
                         wire:model="estadoFiltro"
                         style="border-radius: 6px;">
-                    <option value="">Todos</option>
+                    <option value="">Selecione o estado</option>
                     <option>Administrativo RH</option>
                     <option>Aprovado</option>
                     <option>Rejeitado</option>
@@ -105,115 +129,105 @@
 
     {{-- TABELA --}}
     <div class="card shadow-sm" style="border-radius: 8px; border: 1px solid #e9ecef;">
-        <div class="card-body p-0" style="border-radius: 8px; overflow: hidden;">
+        <div class="bg-white border rounded-3">
+        <div class="table-responsive">
 
-            <div class="table-responsive">
-                <table class="table table-hover table-sm mb-0" style="font-size: 0.9rem;">
-                    
-                    <thead style="background-color: #e9ecef; color: #495057; border-bottom: 2px solid #dee2e6;">
-                        <tr>
-                            <th class="py-2 px-3 fw-semibold">Data</th>
-                            <th class="py-2 px-3 fw-semibold">Funcionário</th>
-                            <th class="py-2 px-3 fw-semibold">Tipo de Alteração</th>
-                            <th class="py-2 px-3 fw-semibold">Processamento</th>
-                            <th class="py-2 px-3 fw-semibold">Horas/Valor</th>
-                            <th class="py-2 px-3 fw-semibold text-center">Observações</th>
-                            <th class="py-2 px-3 fw-semibold">Estado</th>
-                            <th class="py-2 px-3 fw-semibold">Lançado por</th>
-                            <th class="py-2 px-3 fw-semibold text-end">Ações</th>
-                        </tr>
-                    </thead>
+            <table class="table table-hover table-sm mb-0" style="font-size:0.9rem">
 
-                    <tbody>
-                        <tr style="border-bottom: 1px solid #e9ecef;">
-                            <td class="py-2 px-3" style="color: #212529;">04-03-2026</td>
-                            <td class="py-2 px-3">
-                                <strong style="color: #2c3e50;">0020591</strong> 
-                                <span style="color: #6c757d;">- Fernando João Focola</span>
-                            </td>
-                            <td class="py-2 px-3" style="color: #212529;">F28 - Doença Justificada</td>
-                            <td class="py-2 px-3" style="color: #212529;">Vencimento</td>
-                            <td class="py-2 px-3" style="color: #212529;">9.00</td>
-                            <td class="py-2 px-3 text-center">
-                                <span class="badge bg-warning text-dark" style="background-color: #ffc107; color: #212529; padding: 4px 8px; border-radius: 4px;">!</span>
-                            </td>
-                            <td class="py-2 px-3">
-                                <span class="badge bg-info" style="background-color: #17a2b8; color: white; padding: 4px 8px; border-radius: 4px;">
-                                    Administrativo RH
-                                </span>
-                            </td>
-                            <td class="py-2 px-3" style="color: #212529;">Recursos Humanos</td>
-                            <td class="py-2 px-3 text-end">
-                                <button class="btn btn-sm btn-danger me-1" style="padding: 4px 8px; border-radius: 4px;">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                <button class="btn btn-sm btn-warning" style="padding: 4px 8px; border-radius: 4px;">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        
-                        <!-- Repetir linhas conforme necessário -->
-                        <tr style="border-bottom: 1px solid #e9ecef;">
-                            <td class="py-2 px-3" style="color: #212529;">04-03-2026</td>
-                            <td class="py-2 px-3">
-                                <strong style="color: #2c3e50;">0020591</strong> 
-                                <span style="color: #6c757d;">- Osvaldo XPTO </span>
-                            </td>
-                            <td class="py-2 px-3" style="color: #212529;">F28 - Doença Justificada</td>
-                            <td class="py-2 px-3" style="color: #212529;">Vencimento</td>
-                            <td class="py-2 px-3" style="color: #212529;">9.00</td>
-                            <td class="py-2 px-3 text-center">
-                                <span class="badge bg-warning text-dark" style="background-color: #ffc107; color: #212529; padding: 4px 8px; border-radius: 4px;">!</span>
-                            </td>
-                            <td class="py-2 px-3">
-                                <span class="badge bg-info" style="background-color: #17a2b8; color: white; padding: 4px 8px; border-radius: 4px;">
-                                    Administrativo RH
-                                </span>
-                            </td>
-                            <td class="py-2 px-3" style="color: #212529;">Recursos Humanos</td>
-                            <td class="py-2 px-3 text-end">
-                                <button class="btn btn-sm btn-danger me-1" style="padding: 4px 8px; border-radius: 4px;">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                <button class="btn btn-sm btn-warning" style="padding: 4px 8px; border-radius: 4px;">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        
-                        <tr style="border-bottom: 1px solid #e9ecef;">
-                            <td class="py-2 px-3" style="color: #212529;">04-03-2026</td>
-                            <td class="py-2 px-3">
-                                <strong style="color: #2c3e50;">0020591</strong> 
-                                <span style="color: #6c757d;">- Fernando João Focola</span>
-                            </td>
-                            <td class="py-2 px-3" style="color: #212529;">F28 - Doença Justificada</td>
-                            <td class="py-2 px-3" style="color: #212529;">Vencimento</td>
-                            <td class="py-2 px-3" style="color: #212529;">9.00</td>
-                            <td class="py-2 px-3 text-center">
-                                <span class="badge bg-warning text-dark" style="background-color: #ffc107; color: #212529; padding: 4px 8px; border-radius: 4px;">!</span>
-                            </td>
-                            <td class="py-2 px-3">
-                                <span class="badge bg-info" style="background-color: #17a2b8; color: white; padding: 4px 8px; border-radius: 4px;">
-                                    Administrativo RH
-                                </span>
-                            </td>
-                            <td class="py-2 px-3" style="color: #212529;">Recursos Humanos</td>
-                            <td class="py-2 px-3 text-end">
-                                <button class="btn btn-sm btn-danger me-1" style="padding: 4px 8px; border-radius: 4px;">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                                <button class="btn btn-sm btn-warning" style="padding: 4px 8px; border-radius: 4px;">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <thead class="table-light">
+                    <tr>
+                        <th class="px-3">Data</th>
+                        <th class="px-3">Funcionário</th>
+                        <th class="px-3">Tipo de Alteração</th>
+                        <th class="px-3">Processamento</th>
+                        <th class="px-3">Horas/Valor</th>
+                        <th class="px-3 text-center">Obs</th>
+                        <th class="px-3">Estado</th>
+                        <th class="px-3">Lançado por</th>
+                        <th class="px-3 text-end">Ações</th>
+                    </tr>
+                </thead>
 
+                <tbody>
+
+                    {{-- EXEMPLO DE LINHAS --}}
+                    @foreach($linhas ?? [] as $linha)
+                    <tr>
+                        <td class="px-3">{{ $linha['data'] }}</td>
+                        <td class="px-3"><strong>{{ $linha['funcionario'] }}</strong></td>
+                        <td class="px-3">{{ $linha['motivo'] }}</td>
+                        <td class="px-3">{{ $linha['tipo'] }}</td>
+                        <td class="px-3">{{ $linha['valor'] }}</td>
+                        <td class="px-3 text-center">!</td>
+                        <td class="px-3">Administrativo RH</td>
+                        <td class="px-3">RH</td>
+                        <td class="px-3 text-end">
+                            <button class="btn btn-sm btn-light border"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-light border"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                    @endforeach
+
+
+                    <!-- ⭐ LINHA EXCEL -->
+                    <tr class="linha-insert">
+
+                        <td>
+                            <input type="date" class="form-control form-control-sm"
+                                   wire:model.defer="nova.data"
+                                   wire:keydown.enter="addLinha">
+                        </td>
+
+                        <td>
+                        <select class="form-control form-control-sm select2-funcionario"
+                                wire:model="funcionarioFiltro"
+                                style="border-radius: 6px;">
+                            <option value="">Todos</option>
+                            @foreach ($this->funcionarios as $funcionario)
+                                <option value="{{ $funcionario['id'] }}"> {{ $funcionario['numeroFuncionario'] }} - {{ $funcionario['nome'] }}</option>
+                            @endforeach
+                        </select>
+                        </td>
+
+                        <td>
+                            <input type="text" class="form-control form-control-sm"
+                                   placeholder="Tipo alteração"
+                                   wire:model.defer="nova.motivo"
+                                   wire:keydown.enter="addLinha">
+                        </td>
+
+                        <td>
+                            <input type="text" class="form-control form-control-sm"
+                                   placeholder="Processamento"
+                                   wire:model.defer="nova.tipo"
+                                   wire:keydown.enter="addLinha">
+                        </td>
+
+                        <td>
+                            <input type="number" step="0.01" class="form-control form-control-sm"
+                                   placeholder="Horas"
+                                   wire:model.defer="nova.valor"
+                                   wire:keydown.enter="addLinha">
+                        </td>
+
+                        <td colspan="3"></td>
+
+                        <td class="text-end">
+                            <button class="btn btn-success btn-sm d-flex align-items-center justify-content-center" 
+                                    style="width: 32px; height: 32px; padding: 0; border-radius: 5px;"
+                                    wire:click="addLinha"
+                                    title="Adicionar nova linha">
+                                <i class="bi bi-plus-lg" style="font-size: 1rem;"></i>
+                            </button>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
         </div>
+    </div>
     </div>
 
 </div>

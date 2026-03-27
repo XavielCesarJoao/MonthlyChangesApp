@@ -50,6 +50,19 @@
             font-size: 0.85rem;
         }
 
+        .table td, .table th {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    vertical-align: middle;
+}
+
+.linha-insert {
+    position: sticky;
+    bottom: 0;
+    background: #fff3cd;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+}
+
             /* Estilização completa do Select2 */
     
     /* Texto do item selecionado */
