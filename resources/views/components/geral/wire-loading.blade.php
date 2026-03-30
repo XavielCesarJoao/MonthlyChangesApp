@@ -17,7 +17,7 @@
                 <i class="fas fa-cogs fa-spin fa-2x text-primary mb-3"></i>
 
                 <div class="font-weight-bold">
-                    A guardar alterações
+                    Preocessando . . . 
                 </div>
 
                 <small class="text-muted">

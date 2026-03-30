@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Internal\ConfiguracaoCodigo;
 use App\Models\Internal\Empresa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -17,14 +18,7 @@ new class extends Component
     public $tipoAlteracao;
     public $observacao;
     public $statusAprovacao = true;
-    public $nova = [
-        'empresa' => null,
-        'departamento' => null,
-        'funcionario' => null,
-        'dataAlteracao' => null,
-        'tipoAlteracao' => null,
-        'observacao' => null,
-    ];
+    public $codigoAlteracao;
 
 
         public function mount()
@@ -63,6 +57,13 @@ new class extends Component
             return $query->get()->toArray();
         }
 
+        #[Computed(cache: true)]
+        public function codigos() : Array
+        {
+            $codigos = new ConfiguracaoCodigo();
+            return $codigos->buscaCodigo($this->empresa);
+        }
+
 
         public function enviarAprovacao()
         {
@@ -73,6 +74,13 @@ new class extends Component
         public function resetarFiltros()
         {
             $this->reset(['departamento', 'funcionario']); 
+        }
+
+
+        public function recusarDocumento()
+        {
+            
+            //ConfiguracaoCodigo::inseriCodigo(4);
         }
 
 

@@ -190,10 +190,14 @@
                         </td>
 
                         <td>
-                            <input type="text" class="form-control form-control-sm"
-                                   placeholder="Tipo alteração"
-                                   wire:model.defer="nova.motivo"
-                                   wire:keydown.enter="addLinha">
+                        <select class="form-control form-control-sm select2-codigos"
+                                    wire:model="funcionarioFiltro"
+                                    style="border-radius: 6px;">
+                                <option value="">Todos</option>
+                                @foreach ($this->codigos as $c)
+                                    <option value="{{ $c['codigo'] }}"> {{ $c['codigo'] }} - {{ $c['descricao'] }}</option>
+                                @endforeach
+                            </select>
                         </td>
 
                         <td>
@@ -239,7 +243,9 @@
             $(document).ready(function() {
                 $('.select2-departamento').select2({
                     placeholder: 'Selecione um departamento',
-                    width: '100%'
+                    width: '100%',
+                     minimumInputLength: 3,
+                    
                 });
                 // Atualiza o valor selecionado no Livewire quando a seleção muda
                 $('.select2-departamento').on('change', function() {
@@ -252,12 +258,27 @@
             $(document).ready(function() {
                 $('.select2-funcionario').select2({
                     placeholder: 'Selecione um funcionário',
-                    width: '100%'
+                    width: '100%',
+                    minimumInputLength: 3, // Inicia a busca após digitar 2 caracteres
+
                 });
                 // Atualiza o valor selecionado no Livewire quando a seleção muda
                 $('.select2-funcionario').on('change', function() {
                     var selectedValue = $(this).val();
                     @this.set('funcionario', selectedValue);
+                });
+            });
+
+            $(document).ready(function() {
+                $('.select2-codigos').select2({
+                    placeholder: 'Selecione o codigo',
+                    width: '100%',
+                    minimumInputLength: 3,
+                });
+                // Atualiza o valor selecionado no Livewire quando a seleção muda
+                $('.select2-codigos').on('change', function() {
+                    var selectedValue = $(this).val();
+                    @this.set('codigoAlteracao', selectedValue);
                 });
             });
 

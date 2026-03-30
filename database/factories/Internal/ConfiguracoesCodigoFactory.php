@@ -1,43 +1,24 @@
 <?php
 
-namespace App\Models\Internal;
+namespace Database\Factories\Internal;
 
-use Exception;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Log;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ConfiguracaoCodigo extends Model
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Internal\ConfiguracaoCodigo>
+ */
+class ConfiguracoesCodigoFactory extends Factory
 {
-    use HasFactory;
-
-   protected $guarded = [];
-
-    public $timestamps = false;
-
-
-
-    public function buscaCodigo(int $empresa) : Array
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
     {
-        try{
-            Log::info('Buscando codigo da empresa ' . $empresa);
-            return self::where('empresa_id', $empresa)->get()->toArray();
-        }
-        catch(Exception $ex)
-        {
-            Log::warning('Sem registos para a empresa' . $empresa);
-            return [];
-        }
-      
-    }
-
-    public function empresa() : BelongsTo
-    {
-        return $this->belongsTo(Empresa::class);
-    }
-    // ESSA TODA BANGUNÇA É PARA LIMPAR , ESTE PROJECTO NAO PODE FICAR SUJO NAO
-    private static $codigosMap = [
+        $tipos = ['F', 'H', 'R', 'D'];
+        
+ $codigosMap = [
             // FALTAS (F)
             ['codigo' => 'F01', 'descricao' => 'FALTA JUSTIFICADA (HORAS)', 'tipo' => 'F', 'maxLinhasPeriodo' => null, 'minValorLinha' => 1, 'maxValorLinha' => 9, 'maxSomaPeriodo' => null, 'valorPorDefeito' => null],
             ['codigo' => 'F02', 'descricao' => 'LICENÇA SEM VENCIMENTO SEM REMUNERAÇÃO (DIAS)', 'tipo' => 'F', 'maxLinhasPeriodo' => null, 'minValorLinha' => 1, 'maxValorLinha' => 30, 'maxSomaPeriodo' => null, 'valorPorDefeito' => null],
@@ -98,42 +79,138 @@ class ConfiguracaoCodigo extends Model
             ['codigo' => 'D07', 'descricao' => 'DEDUCAO DE VALORES JÁ PAGOS (AKZ)', 'tipo' => 'D', 'maxLinhasPeriodo' => null, 'minValorLinha' => 100, 'maxValorLinha' => 50000, 'maxSomaPeriodo' => null, 'valorPorDefeito' => null],
             ['codigo' => 'D66', 'descricao' => 'DEDUCAO DE VALORES JÁ PAGOS (AKZ)', 'tipo' => 'D', 'maxLinhasPeriodo' => null, 'minValorLinha' => 100, 'maxValorLinha' => 50000, 'maxSomaPeriodo' => null, 'valorPorDefeito' => null],
         ];
+         $codigoData = $this->faker->randomElement($codigosMap);
 
-
-    public static function inseriCodigo(int $empresa): bool
-    {
-        try{
-
-            foreach(self::$codigosMap as $codigo)
-                {
-                    $codigoExiste = self::where('codigo', $codigo['codigo'])->where('empresa_id', $empresa)->exists();
-                    if(!$codigoExiste)
-                        {
-                            self::create([
-                                'codigo' => $codigo['codigo'],
-                                'descricao' => $codigo['descricao'],
-                                'tipo' => $codigo['tipo'],
-                                'maxLinhasPeriodo' => $codigo['maxLinhasPeriodo'],
-                                'minValorLinha' => $codigo['minValorLinha'],
-                                'maxValorLinha' => $codigo['maxValorLinha'],
-                                'maxSomaPeriodo' => $codigo['maxSomaPeriodo'],
-                                'valorPorDefeito' => $codigo['valorPorDefeito'],
-                                'domingosAndFeriados' => 0,
-                                'empresa_id' => $empresa
-                                
-                            ]);
-                        }
-                }
-
-                return true;
-        }
-
-        catch(Exception $ex)
-        {
-          
-            dd($ex);
-        }
-            
-        
+                 return [
+            'codigo' => $codigoData['codigo'],
+            'descricao' => $codigoData['descricao'],
+            'tipo' => $codigoData['tipo'],
+            'maxLinhasPeriodo' => $codigoData['maxLinhasPeriodo'],
+            'minValorLinha' => $codigoData['minValorLinha'],
+            'maxValorLinha' => $codigoData['maxValorLinha'],
+            'maxSomaPeriodo' => $codigoData['maxSomaPeriodo'],
+            'listaValoresPossiveis_id' => null,
+            'domingosAndFeriados' => $this->faker->boolean(10), // 10% de chance
+            'escondeAteLimite' => null,
+            'mostraAteLimite' => null,
+            'escondeDesdeLimite' => null,
+            'mostraDesdeLimite' => null,
+            'dependeDe' => null,
+            'unicoNoPeriodo' => $codigoData['unicoNoPeriodo'] ?? null,
+            'valorPorDefeito' => $codigoData['valorPorDefeito'],
+            'alteracaomensal_type' => $this->getAlteracaoMensalType($codigoData['tipo']),
+            'empresa_id' => fake()->numberBetween(1,5),
+        ];
     }
+
+
+    /**
+     * Define o tipo de modelo com base no código
+     */
+    public function getAlteracaoMensalType(string $tipo): string
+    {
+        return match ($tipo) {
+            'F' => 'App\Models\External\PRIMAVERA\Falta',
+            'H' => 'App\Models\External\PRIMAVERA\HoraExtra',
+            'R' => 'App\Models\External\PRIMAVERA\Remuneracao',
+            'D' => 'App\Models\External\PRIMAVERA\Desconto',
+            default => 'App\Models\External\PRIMAVERA\Falta',
+        };
+    }
+
+        /**
+     * Configuração para códigos de falta
+     */
+    public function falta(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'tipo' => 'F',
+            'alteracaomensal_type' => 'App\Models\External\PRIMAVERA\Falta',
+            'minValorLinha' => 1,
+            'maxValorLinha' => 9,
+        ]);
+    }
+
+        /**
+     * Configuração para horas extras
+     */
+    public function horaExtra(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'tipo' => 'H',
+            'alteracaomensal_type' => 'App\Models\External\PRIMAVERA\HoraExtra',
+            'minValorLinha' => 1,
+            'maxValorLinha' => 15,
+        ]);
+    }
+
+        public function remuneracao(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'tipo' => 'R',
+            'alteracaomensal_type' => 'App\Models\External\PRIMAVERA\Remuneracao',
+            'minValorLinha' => 100,
+            'maxValorLinha' => 100000,
+        ]);
+    }
+
+        /**
+     * Configuração para descontos
+     */
+    public function desconto(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'tipo' => 'D',
+            'alteracaomensal_type' => 'App\Models\External\PRIMAVERA\Desconto',
+            'minValorLinha' => 100,
+            'maxValorLinha' => 50000,
+        ]);
+    }
+
+        /**
+     * Configuração para códigos únicos no período
+     */
+    public function unicoNoPeriodo(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'unicoNoPeriodo' => 1,
+            'maxLinhasPeriodo' => 1,
+        ]);
+    }
+
+        /**
+     * Configuração para férias
+     */
+    public function ferias(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'codigo' => 'F50',
+            'descricao' => 'GOZO DE FERIAS (DIAS)',
+            'tipo' => 'F',
+            'maxLinhasPeriodo' => 1,
+            'minValorLinha' => 1,
+            'maxValorLinha' => 30,
+            'maxSomaPeriodo' => 30,
+            'unicoNoPeriodo' => 1,
+            'alteracaomensal_type' => 'App\Models\External\PRIMAVERA\Falta',
+        ]);
+    }
+
+        /**
+     * Configuração para prémios de assiduidade
+     */
+    public function premioAssiduidade(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'tipo' => 'R',
+            'maxLinhasPeriodo' => 1,
+            'minValorLinha' => 1,
+            'maxValorLinha' => 1,
+            'maxSomaPeriodo' => 1,
+            'unicoNoPeriodo' => 1,
+            'valorPorDefeito' => 1,
+            'alteracaomensal_type' => 'App\Models\External\PRIMAVERA\Remuneracao',
+        ]);
+    }
+
 }

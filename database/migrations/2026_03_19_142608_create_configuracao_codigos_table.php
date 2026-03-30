@@ -32,7 +32,7 @@ return new class extends Migration
             $table->integer('valorPorDefeito')->nullable();
             $table->string('alteracaomensal_type')->nullable();
             $table->foreignId('empresa_id')->constrained('empresas')->cascadeOnDelete();
-            $table->timestamps();
+     
         });
     }
 
