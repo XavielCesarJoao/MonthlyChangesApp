@@ -221,7 +221,7 @@
                                     style="width: 32px; height: 32px; padding: 0; border-radius: 5px;"
                                     wire:click="addLinha"
                                     title="Adicionar nova linha">
-                                <i class="bi bi-plus-lg" style="font-size: 1rem;"></i>
+                                <i class="bi bi-plus-lg" style="font-size: 1rem;">+</i>
                             </button>
                         </td>
 
