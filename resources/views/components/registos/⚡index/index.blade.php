@@ -10,15 +10,16 @@
         <!-- Botão Atualizar -->
         <button class="btn btn-sm border-0" 
                 title="Atualizar filtros" 
-                wire:click="resetarFiltros"
+                wire:click="addCodigo"
                 style="background: #f1f3f5; color: #495057; width: 34px; height: 34px; border-radius: 5px;">
             <i class="bi bi-arrow-clockwise"></i>
+            -
         </button>
 
         <!-- Botão Exportar Excel -->
         <button class="btn btn-sm border-0" 
                 title="Exportar para Excel" 
-                wire:click="exportarExcel"
+              
                 style="background: #f1f3f5; color: #198754; width: 34px; height: 34px; border-radius: 5px;">
             <i class="bi bi-file-earmark-excel"></i>
         </button>
@@ -66,6 +67,7 @@
     </div>
 
 </div>
+
 
     <!-- BODY -->
     <div class="card-body" style="background-color: #f8f9fa;">
@@ -191,7 +193,7 @@
 
                         <td>
                         <select class="form-control form-control-sm select2-codigos"
-                                    wire:model="funcionarioFiltro"
+                                    wire:model="codigoAlteracao"
                                     style="border-radius: 6px;">
                                 <option value="">Todos</option>
                                 @foreach ($this->codigos as $c)
@@ -273,7 +275,7 @@
                 $('.select2-codigos').select2({
                     placeholder: 'Selecione o codigo',
                     width: '100%',
-                    minimumInputLength: 3,
+                   // minimumInputLength: 3,
                 });
                 // Atualiza o valor selecionado no Livewire quando a seleção muda
                 $('.select2-codigos').on('change', function() {
