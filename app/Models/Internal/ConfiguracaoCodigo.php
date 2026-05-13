@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class ConfiguracaoCodigo extends Model
 {
@@ -22,11 +22,13 @@ class ConfiguracaoCodigo extends Model
     {
         try{
             Log::info('Buscando codigo da empresa ' . $empresa);
+    
             return self::where('empresa_id', $empresa)->get()->toArray();
         }
         catch(Exception $ex)
         {
             Log::warning('Sem registos para a empresa' . $empresa);
+
             return [];
         }
       

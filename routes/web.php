@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/home', function () {
 
     if (app()->isLocal()) {
-       auth()->loginUsingId(11);
+       auth()->loginUsingId(51);
       //  auth()->logout();
     }
 

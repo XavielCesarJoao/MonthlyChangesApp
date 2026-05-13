@@ -1,8 +1,10 @@
 <?php
 
+use App\Domain\AlteracoesMensais\Actions\Configuracoes;
 use App\Models\Internal\ConfiguracaoCodigo;
 use App\Models\Internal\Empresa;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -14,6 +16,10 @@ new class extends Component
     public $departamento;
     public $funcionario;
 
+    public $dataInicial;
+    // DATA FINAL DO PERIODO
+    public $dataFinal;
+    // DATA SELECIONADA NO DATEPICKER
     public $dataAlteracao;
     public $tipoAlteracao;
     public $observacao;
@@ -23,10 +29,19 @@ new class extends Component
 
         public function mount()
         {
-            $this->empresa = 1; 
+            $this->empresa = Auth::user()->empresa_id ; 
+
+            $config = new Configuracoes() ;
+
+            $periodo = $config->devolvePeriodo($this->empresa);
+
+            $this->dataInicial = $periodo['inicial'];
+            $this->dataFinal = $periodo['final'];
+
+            $this->dataAlteracao = $periodo['inicial'];
         }
 
-        #[Computed]
+        #[Computed] 
         public function buscaEmpresaDepartamentosFuncionariosDoUsuario() : Array
         {
             try
@@ -57,7 +72,7 @@ new class extends Component
             return $query->get()->toArray();
         }
 
-        #[Computed(cache: true)]
+        #[Computed]
         public function codigos() : Array
         {
             $codigos = new ConfiguracaoCodigo();
@@ -65,23 +80,20 @@ new class extends Component
         }
 
 
-        public function enviarAprovacao()
-        {
-            dd($this->empresa, $this->departamento, $this->funcionario);
-            // Aqui você pode adicionar a lógica para enviar os dados para aprovação
-        }
-
-        public function resetarFiltros()
-        {
-            $this->reset(['departamento', 'funcionario']); 
-        }
-
-
-        public function recusarDocumento()
-        {
+        public function addCodigo(){
             
-            //ConfiguracaoCodigo::inseriCodigo(4);
+         $codigos = new ConfiguracaoCodigo();
+           //  dd($this->empresa);
+         $codigos-> inseriCodigo( $this->empresa);
         }
+
+
+        public function adicionaLinha(){
+            dd($this->dataAlteracao);
+        }
+
+
+
 
 
 

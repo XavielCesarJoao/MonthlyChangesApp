@@ -26,6 +26,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'empresa_id',
     ];
 
     protected $with = ['roles'];
