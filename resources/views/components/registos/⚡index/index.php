@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\AlteracoesMensais\Actions\Configuracoes;
 use App\Models\Internal\ConfiguracaoCodigo;
 use App\Models\Internal\Empresa;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,10 @@ new class extends Component
     public $departamento;
     public $funcionario;
 
+    public $dataInicial;
+    // DATA FINAL DO PERIODO
+    public $dataFinal;
+    // DATA SELECIONADA NO DATEPICKER
     public $dataAlteracao;
     public $tipoAlteracao;
     public $observacao;
@@ -25,6 +30,15 @@ new class extends Component
         public function mount()
         {
             $this->empresa = Auth::user()->empresa_id ; 
+
+            $config = new Configuracoes() ;
+
+            $periodo = $config->devolvePeriodo($this->empresa);
+
+            $this->dataInicial = $periodo['inicial'];
+            $this->dataFinal = $periodo['final'];
+
+            $this->dataAlteracao = $periodo['inicial'];
         }
 
         #[Computed] 
@@ -66,23 +80,16 @@ new class extends Component
         }
 
 
-        public function enviarAprovacao()
-        {
-            dd($this->empresa, $this->departamento, $this->funcionario);
-            // Aqui você pode adicionar a lógica para enviar os dados para aprovação
-        }
-
         public function addCodigo(){
-             $codigos = new ConfiguracaoCodigo();
-
+            
+         $codigos = new ConfiguracaoCodigo();
            //  dd($this->empresa);
          $codigos-> inseriCodigo( $this->empresa);
-
         }
 
-        public function resetarFiltros()
-        {
-            $this->reset(['departamento', 'funcionario']); 
+
+        public function adicionaLinha(){
+            dd($this->dataAlteracao);
         }
 
 

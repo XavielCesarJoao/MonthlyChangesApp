@@ -176,8 +176,8 @@
 
                         <td>
                             <input type="date" class="form-control form-control-sm"
-                                   wire:model.defer="nova.data"
-                                   wire:keydown.enter="addLinha">
+                                   wire:model="dataAlteracao"
+                                   min="{{ $this->dataInicial }}" max="{{ $this->dataFinal }}">
                         </td>
 
                         <td>
@@ -221,7 +221,7 @@
                         <td class="text-end">
                             <button class="btn btn-success btn-sm d-flex align-items-center justify-content-center" 
                                     style="width: 32px; height: 32px; padding: 0; border-radius: 5px;"
-                                    wire:click="addLinha"
+                                    wire:click="adicionaLinha"
                                     title="Adicionar nova linha">
                                 <i class="bi bi-plus-lg" style="font-size: 1rem;">+</i>
                             </button>
